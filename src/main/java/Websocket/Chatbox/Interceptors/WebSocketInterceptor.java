@@ -11,5 +11,9 @@ public class WebSocketInterceptor {
         this.jwtService = jwtService;
     }
 
-    public void beforeHandShake(HttpServletRequest request)
+    public void beforeHandShake(HttpServletRequest request){
+
+        System.out.println("hi");
+    }
+
 }

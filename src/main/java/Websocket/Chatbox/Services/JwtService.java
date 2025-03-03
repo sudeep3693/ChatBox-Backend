@@ -15,11 +15,11 @@ import Websocket.Chatbox.Modals.User;
 @Service
 public class JwtService {
 
-private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-private JwtParser jwtParser = Jwts.parser().verifyWith((SecretKey) key).build();
+private final JwtParser jwtParser = Jwts.parser().verifyWith((SecretKey) key).build();
 
-private String generateJwt(User user){
+public String generateJwt(User user){
 
     return Jwts.builder()
             .subject(user.getUserName())
@@ -30,7 +30,7 @@ private String generateJwt(User user){
             .compact();
 }
 
-private String getUsernameFromJwt(String token){
+public String getUsernameFromJwt(String token){
 try{
     return jwtParser.parseClaimsJwt(token).getPayload().getSubject();
 
@@ -42,10 +42,20 @@ catch (Exception e){
 }
 }
 
-private String validateToken(String token, String username){
+    private Date extractExpiration(String token) {
+        return
+                jwtParser.parseClaimsJwt(token).getPayload().getExpiration();
+    }
 
 
-}
+
+    public boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public boolean validateToken(String token, String username) {
+        return (username.equals(getUsernameFromJwt(token)) && !isTokenExpired(token));
+    }
 
 
 }
