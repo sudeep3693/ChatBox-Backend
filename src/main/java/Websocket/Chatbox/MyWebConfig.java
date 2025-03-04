@@ -16,7 +16,7 @@ public class MyWebConfig extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws IOException {
         sessions.put(session.getId(), session);
-        session.sendMessage(new TextMessage("New Connection Established: " + session.getId()));
+        session.sendMessage(new TextMessage("New Connection Established: " + session.getAttributes().get("user")));
         System.out.println("Connected: " + session.getId());
     }
 
@@ -26,7 +26,7 @@ public class MyWebConfig extends TextWebSocketHandler {
 
         for (WebSocketSession s : sessions.values()) {
             if (s.isOpen()) {
-                s.sendMessage(new TextMessage("User " + session.getId() + " says: " + message.getPayload()));
+                s.sendMessage(new TextMessage("User " + session.getAttributes().get("user") + " says: " + message.getPayload()));
             }
         }
     }
