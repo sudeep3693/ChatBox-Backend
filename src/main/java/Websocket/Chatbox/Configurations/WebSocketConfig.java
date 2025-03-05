@@ -23,6 +23,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
         registry.addHandler(new MyWebConfig(),"/ws")
                 .setAllowedOrigins("*")
-                .addInterceptors((HandshakeInterceptor) new WebSocketInterceptor(jwtService));
+                .addInterceptors((HandshakeInterceptor) new WebSocketInterceptor(jwtService))\
+        ;
     }
 }
